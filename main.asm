@@ -23,7 +23,7 @@ INITIAL_LINECAP_LEVEL := 39
 INITIAL_LINECAP_LINES := $30 ; bcd
 INITIAL_LINECAP_LINES_1 := 3 ; hex (lol)
 BTYPE_START_LINES := $25 ; bcd
-MENU_HIGHLIGHT_COLOR := $12 ; $12 in gym, $16 in original
+MENU_HIGHLIGHT_COLOR := $16 ; $12 in gym, $16 in original
 BLOCK_TILES := $7B
 EMPTY_TILE := $EF
 INVISIBLE_TILE := $43
@@ -7761,7 +7761,7 @@ game_palette:
         .byte   $3C,$00,$30,$FF
 title_palette:
         .byte   $3F,$00,$14,$0F,$3C,$38,$00,$0F
-        .byte   $17,$27,$37,$0F,$30,MENU_HIGHLIGHT_COLOR,$00,$0F
+        .byte   $0,$10,$30,$0F,$30,MENU_HIGHLIGHT_COLOR,$00,$0F
         .byte   $22,$2A,$28,$0F,$30,$29,$27,$FF
 menu_palette:
         .byte   $3F,$00,$16,$0F,$30,$38,$26,$0F
