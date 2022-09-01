@@ -86,34 +86,34 @@ printNT(buffer, lookup);
 
 drawTiles(buffer, lookup, `
 ################################
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#           HIGHSCORES         #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                       LEVEL  #
-#                              #
-#                              #
-#                       rttty  #
-#                       f   h  #
-#                       vbbbn  #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
-#                              #
+#qwwwwwwwwwwwwwwwwwwwwwwwwwwwwe#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a          HIGHSCORES        d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                      LEVEL d#
+#a                            d#
+#a                            d#
+#a                      rttty d#
+#a                      f   h d#
+#a                      vbbbn d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#zxxxxxxxxxxxxxxxxxxxxxxxxxxxxc#
 ################################
 `);
 

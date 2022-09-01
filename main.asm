@@ -378,13 +378,13 @@ currentlyPlayingMusicTrack:= $06FD          ; Copied from musicTrack
 unreferenced_soundRngTmp:= $06FF
 highscores := $700
 ; scores are name - score - lines - startlevel - level
-highScoreQuantity := 5
+highScoreQuantity := 3
 highScoreNameLength := 8
 highScoreScoreLength := 4
 highScoreLinesLength := 2
 highScoreLevelsLength := 2
 highScoreLength := highScoreNameLength + highScoreScoreLength + highScoreLinesLength + highScoreLevelsLength
-; 5 * 16 = 80/91 bytes ^
+; 3 * 16 / 91 bytes ^
 ; .. bunch of unused stuff
 initMagic   := $075B                        ; Initialized to a hard-coded number. When resetting, if not correct number then it knows this is a cold boot
 
@@ -2836,7 +2836,7 @@ levelMenuRenderReady:
         lda heartsAndReady
         and #$F0
         beq @notReady
-        lda #$73
+        lda #$A7
         sta spriteYOffset
         lda #$78
         sta spriteXOffset
@@ -7058,9 +7058,9 @@ highScoreEntryScreen:
         jsr copyRleNametableToPpu
         .addr   enter_high_score_nametable
         jsr showHighScores
-        lda #$21
+        lda #$20
         sta tmp1
-        lda #$89
+        lda #$AE
         sta tmp2
         jsr displayModeText
         lda #$02
@@ -7088,7 +7088,7 @@ highScoreEntryScreen:
         asl
         asl
         asl
-        adc #$20
+        adc #$18
         sta spriteXOffset
         lda #$0E
         sta spriteIndexInOamContentLookup
@@ -7214,7 +7214,7 @@ highScoreEntryScreen:
         rts
 
 highScorePosToY:
-        .byte   $9F,$AF,$BF
+        .byte   $3F,$5F,$7F
 highScoreEntryRowOffsetLookup:
         .byte   $0, highScoreLength, highScoreLength*2
 
