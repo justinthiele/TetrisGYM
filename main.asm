@@ -23,7 +23,7 @@ INITIAL_LINECAP_LEVEL := 39
 INITIAL_LINECAP_LINES := $30 ; bcd
 INITIAL_LINECAP_LINES_1 := 3 ; hex (lol)
 BTYPE_START_LINES := $25 ; bcd
-MENU_HIGHLIGHT_COLOR := $16 ; $12 in gym, $16 in original
+MENU_HIGHLIGHT_COLOR := $21 ; $12 in gym, $16 in original
 BLOCK_TILES := $7B
 EMPTY_TILE := $EF
 INVISIBLE_TILE := $43
@@ -3881,16 +3881,14 @@ orientationToSpriteTable:
         .byte   $00,$00,$0C
 
 spriteCathedral:
-        .byte $20, $0, $1, $1, $20, $30
-        .byte $8, $8, $7, $1, $20, $31
-        .byte $0, $10, $8, $6, $20, $40
+        .byte $16, $F8, $3, $9, $20, $3D
         .byte $FF
 
 spriteCathedralFire0:
-        .byte $8, $0, $2, $1, $1, $A0, $FF
+        .byte $8, $FE, $2, $1, $1, $A0, $FF
 
 spriteCathedralFire1:
-        .byte $0, $0, $4, $2, $1, $A2, $FF
+        .byte $5, $FE, $3, $2, $1, $CD, $FF
 
 rectBuffer := generalCounter
 rectX := rectBuffer+0
@@ -7767,7 +7765,7 @@ menu_palette:
         .byte   $17,$27,$37,$0F,$30,MENU_HIGHLIGHT_COLOR,$00,$0F
         .byte   $16,$2A,$28,$0F,$16,$26,$27,$0f,$2A,$FF
 rocket_palette:
-        .byte   $3F,$11,$7,$16,$2A,$28,$0f,$37,$18,$38 ; sprite
+        .byte   $3F,$11,$7,$17,$27,$38,$0f,$37,$18,$38 ; sprite
         .byte   $3F,$00,$8,$0f,$3C,$38,$00,$0F,$20,$12,$15 ; bg
         .byte   $FF
 wait_palette:
