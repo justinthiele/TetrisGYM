@@ -10,7 +10,7 @@
 INES_MAPPER := 1 ; supports 1 and 3
 PRACTISE_MODE := 1
 NO_MUSIC := 1
-SAVE_HIGHSCORES := 1
+SAVE_HIGHSCORES := 0
 
 ; dev flags
 AUTO_WIN := 0 ; press select to end game
@@ -18,7 +18,7 @@ NO_SCORING := 0 ; breaks pace
 NO_SFX := 0
 NO_MENU := 0
 
-INITIAL_CUSTOM_LEVEL := 29
+INITIAL_CUSTOM_LEVEL := 18
 INITIAL_LINECAP_LEVEL := 39
 INITIAL_LINECAP_LINES := $30 ; bcd
 INITIAL_LINECAP_LINES_1 := 3 ; hex (lol)
@@ -378,13 +378,13 @@ currentlyPlayingMusicTrack:= $06FD          ; Copied from musicTrack
 unreferenced_soundRngTmp:= $06FF
 highscores := $700
 ; scores are name - score - lines - startlevel - level
-highScoreQuantity := 3
+highScoreQuantity := 5
 highScoreNameLength := 8
 highScoreScoreLength := 4
 highScoreLinesLength := 2
 highScoreLevelsLength := 2
 highScoreLength := highScoreNameLength + highScoreScoreLength + highScoreLinesLength + highScoreLevelsLength
-; 48/91 bytes ^
+; 5 * 16 = 80/91 bytes ^
 ; .. bunch of unused stuff
 initMagic   := $075B                        ; Initialized to a hard-coded number. When resetting, if not correct number then it knows this is a cold boot
 
@@ -2377,9 +2377,9 @@ gameMode_levelMenu:
         .addr   menu_palette
         jsr copyRleNametableToPpu
         .addr   level_menu_nametable
-        lda #$20
+        lda #$21
         sta tmp1
-        lda #$96 ; $6D is OEM position
+        lda #$18 ; $6D is OEM position
         sta tmp2
         jsr displayModeText
         jsr showHighScores
@@ -2410,7 +2410,7 @@ gameMode_levelMenu:
 levelMenuLinecapInfo:
         lda #$20
         sta PPUADDR
-        lda #$F5
+        lda #$63
         sta PPUADDR
         clc
         lda #LINECAP_WHEN_STRING_OFFSET
@@ -2418,9 +2418,9 @@ levelMenuLinecapInfo:
         sta stringIndexLookup
         jsr stringBackground
 
-        lda #$21
+        lda #$20
         sta PPUADDR
-        lda #$15
+        lda #$83
         sta PPUADDR
         clc
         lda #LINECAP_HOW_STRING_OFFSET
@@ -2430,7 +2430,7 @@ levelMenuLinecapInfo:
 
         lda #$20
         sta PPUADDR
-        lda #$FA
+        lda #$88
         sta PPUADDR
         jsr render_linecap_level_lines
         rts
@@ -2457,6 +2457,9 @@ gameMode_levelMenu_processPlayer1Navigation:
         jmp gameMode_levelMenu
 @notClearingHighscores:
 .endif
+
+        lda #1
+        sta levelControlMode ; CTUK
 
         jsr levelControl
         jsr levelMenuRenderHearts
@@ -2608,9 +2611,9 @@ levelControlCustomLevel:
         lda frameCounter
         and #$03
         beq @indicatorEnd
-        lda #$4E
+        lda #$96
         sta spriteYOffset
-        lda #$B0
+        lda #$D2
         sta spriteXOffset
         lda #$21
         sta spriteIndexInOamContentLookup
@@ -2833,9 +2836,9 @@ levelMenuRenderReady:
         lda heartsAndReady
         and #$F0
         beq @notReady
-        lda #$4f
+        lda #$73
         sta spriteYOffset
-        lda #$88
+        lda #$78
         sta spriteXOffset
         lda #$20
         sta spriteIndexInOamContentLookup
@@ -4120,9 +4123,9 @@ spriteHeartCursor:
 spriteHeart:
         .byte   $00,$6e,$00,$00,$FF
 spriteReady:
-        .byte   $00,'R',$01,$00,$08,'E',$01,$00
-        .byte   $10,'A',$01,$00,$18,'D',$01,$00
-        .byte   $20,'Y',$01,$FF
+        .byte   $00,'R',$01,$00,$00,'E',$01,$08
+        .byte   $00,'A',$01,$10,$00,'D',$01,$18
+        .byte   $00,'Y',$01,$20
         .byte   $FF
 spriteCustomLevelCursor:
         .byte   $00,$6A,$00,$00,$21,$6A,$80,$00
@@ -4243,9 +4246,9 @@ render_mode_level_menu:
         lda outOfDateRenderFlags
         and #1
         beq @noCustomLevel
-        lda #$21
+        lda #$2E
         sta PPUADDR
-        lda #$95
+        lda #$B9
         sta PPUADDR
         lda customLevel
         jsr renderByteBCD
@@ -6857,6 +6860,17 @@ showHighScores:
         lda #$FF
         sta PPUDATA
 
+        ; update PPUADDR for lines
+        lda generalCounter2
+        asl a
+        tax
+        lda highScorePpuAddrTable,x
+        sta PPUADDR
+        inx
+        lda highScorePpuAddrTable,x
+        adc #$29
+        sta PPUADDR
+
         ; lines
         lda highscores,y
         sta PPUDATA
@@ -6873,17 +6887,6 @@ showHighScores:
         jsr renderByteBCD
         iny
 
-        ; update PPUADDR for start level
-        lda generalCounter2
-        asl a
-        tax
-        lda highScorePpuAddrTable,x
-        sta PPUADDR
-        inx
-        lda highScorePpuAddrTable,x
-        adc #$35
-        sta PPUADDR
-
         ; level
         lda highscores,y
         jsr renderByteBCD
@@ -6896,9 +6899,10 @@ showHighScores:
         jmp @copyEntry
 
 showHighScores_ret:  rts
-
+hPATStart := $2103
+hPATInc := $80
 highScorePpuAddrTable:
-        .dbyt   $2284,$22C4,$2304
+        .dbyt   hPATStart,hPATStart+(hPATInc*1),hPATStart+(hPATInc*2),hPATStart+(hPATInc*3),hPATStart+(hPATInc*4)
 highScoreCharToTile:
         .byte   $FF,$0A,$0B,$0C,$0D,$0E,$0F,$10
         .byte   $11,$12,$13,$14,$15,$16,$17,$18
